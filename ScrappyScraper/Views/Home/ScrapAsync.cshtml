@@ -1,0 +1,112 @@
+﻿@model ScrappyScraper.Models.HomeViewModel
+
+@{
+    var topTen = Model.WordDictionary.OrderByDescending(o => o.Value).ThenBy(t => t.Key).Take(10).ToList();
+}
+
+@if (!String.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="container text-center">
+        <h4>@Model.ErrorMessage</h4>
+        @using (Html.BeginForm("ScrapAsync", "Home", FormMethod.Post, new { @class = "form" }))
+        {
+            <div class="form-group" style="margin-top:3%;">
+                <label for="scrapUrl">Try Again?</label>
+                <input type="text" placeholder="enter url" name="scrapUrl" id="scrapUrl" class="form-control offset-3 col-md-6" />
+            </div>
+
+            <input type="submit" value="Scrape" class="btn btn-dark" />
+        }
+    </div>
+
+}
+else
+{
+    <div class="container">
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner text-center">
+                @for (int i = 0; i < Model.ImageSources.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        <div class="carousel-item active">
+                            <img class="d-block w-100" src="@Model.ImageSources.ElementAt(i)" alt="Image Unavailable" style="max-height:500px; max-width:750px;">
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item">
+                            <img class="d-block w-100" src="@Model.ImageSources.ElementAt(i)" alt="Image Unavailable" style="max-height:500px; max-width:750px;">
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="container text-center">
+        <p>Scraped URL: <strong class="scrape-url">@Model.CurrentUrl</strong></p>
+        @using (Html.BeginForm("ScrapAsync", "Home", FormMethod.Post, new { @class = "form" }))
+        {
+            <div class="form-group" style="margin-top:3%;">
+                <label for="scrapUrl">Scrape Another?</label>
+                <input type="text" placeholder="enter url" name="scrapUrl" id="scrapUrl" class="form-control offset-3 col-md-6" />
+            </div>
+
+            <input type="submit" value="Scrape" class="btn btn-dark" />
+        }
+    </div>
+
+    <hr />
+    <div class="row text-center">
+        <article class="col-md-6">
+            <h4>Image Count:</h4>
+            <p class="img-total">@Model.ImageSources.Count</p>
+        </article>
+        <article class="col-md-6">
+            <h4>Word Count:</h4>
+            <p class="wrd-total">@Model.WordDictionary.Sum(s => s.Value)</p>
+        </article>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <section class="row">
+                <h4 class="text-center col-md-12">Image List</h4>
+                <div class="col-md-12">
+                    <ul class="list-group list-group-flush list-scroll">
+                        @foreach (var src in Model.ImageSources)
+                        {
+                            <li class="list-group-item">
+                                @src
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <div class="col-md-4">
+            <section class="row">
+                <h4 class="text-center col-md-12">Top 10 Words</h4>
+                <div class="col-md-12">
+                    <ul class="list-group">
+                        @foreach (var w in topTen)
+                        {
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                @w.Key
+                                <span class="badge badge-success badge-pill">@w.Value</span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+
+}
+
+
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")

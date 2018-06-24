@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container text-center">
+    <h1 class="scrape-title">Scrappy Scrapper</h1>
+    <img src="~/Content/Images/noscraping.jpg" height="500" width="1000" />
+        @using (Html.BeginForm("ScrapAsync", "Home", FormMethod.Post, new { @class="form" }))
+        {
+            <div class="form-group" style="margin-top:3%;">
+                <label for="scrapUrl">Enter Url to Scrape</label>
+                <input type="text" placeholder="url" name="scrapUrl" id="scrapUrl" class="form-control offset-3 col-md-6" />
+            </div>
+
+            <input type="submit" value="Scrape" class="btn btn-dark" />
+        }
+
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
