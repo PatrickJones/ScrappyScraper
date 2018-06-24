@@ -1,4 +1,4 @@
-# ScrappyScraper
+# ScrappyScrapper
 Web scrapper that uses AngleSharp Library to parse and traverse html (DOM) document.
 
 Enter any valid url (http or https) and the Scrappy Scrapper will gather all image sources and display them in a list while rotating them in a carousel.
